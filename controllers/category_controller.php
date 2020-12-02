@@ -6,6 +6,7 @@
 	if ($func == "getProductList") {
 		$usermodel = new Category();
 		$data = $usermodel->queryProductList($category);
+		echo ($data);
 	}
 	else {
 		

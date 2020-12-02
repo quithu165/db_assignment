@@ -14,24 +14,24 @@ class Category extends DbModel
     public function queryProductList($category)
     { {
             $conn = $this->connect();
-            $sql = "SELECT 
-                        name
+            $sql = 'SELECT 
+                        *
                     FROM 
-                        product JOIN category 
-                    WHERE 
-                        product.category_id = 3";
+                        product
+                    ORDER BY product_id';
             $productList = "";
             if (!$res = mysqli_query($conn, $sql)) {
+                echo "Can not query";
                 return false;
-            };
-            
+            }
             if (mysqli_num_rows($res) > 0) {
                 while ($row = mysqli_fetch_assoc($res)) {
-                    $productList = $productList . '_' . $row["product..name"];
-                    echo ($productList);
+                    if (strpos($row['name'], $category) && strlen($category) <= strlen($row['name']))
+                        $productList = $productList . '_' . $row["name"];
+                    //echo ($productList);            }
                 }
+                return $productList;
             }
-            return $productList;
         }
     }
 }
