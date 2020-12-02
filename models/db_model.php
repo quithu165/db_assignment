@@ -10,7 +10,7 @@
                 echo "Could not connect to database";
                 die;
             }
-            // echo "connect db success";
+            //  echo "connect db success";
 			return $conn ;
 		}
 	}

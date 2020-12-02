@@ -4,11 +4,12 @@
     $func = substr($res, 0, strripos($res, '_'));
 	$category = substr($res, strripos($res, '_')+1);
 	if ($func == "getProductList") {
-		$usermodel = new Category();
-		$data = $usermodel->queryProductList($category);
+		$categorymodel = new Category();
+		$data = $categorymodel->queryProductList($category);
 		echo ($data);
 	}
 	else {
-		
-		
+		$categorymodel = new Category();
+		$data = $categorymodel->queryProduct($res);
+		echo ($data);
 	}

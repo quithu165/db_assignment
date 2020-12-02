@@ -52,23 +52,13 @@
                                 </li>
                             </ul>
                             <ul class="navbar-nav ml-auto" id="nav_menu">
-                                <input name="name" class="form-control mr-2" placeholder="Username" type="text">
-                                <input name="pass" class="form-control mr-3" placeholder="********" type="password">
-                                <a class="dropdown-item text-white bg-primary mr-5 " id="login" role="button" onclick="authentification()">Sign
+                                <input id="name" class="form-control mr-2" placeholder="Username">
+                                <a class="dropdown-item text-white bg-primary mr-5 " id="login" role="button"
+                                    onclick="authentification()">Sign
                                     In</a>
-                                <li class="nav-item dropdown">
-                                    <div class="nav-item dropdown show">
-                                        <a id="username" href="" style="display: none;"
-                                            class="nav-link dropdown-toggle p-3 text-primary" data-toggle="dropdown"
-                                            aria-expanded="true"></a>
-                                        <div class="dropdown-menu" style="display: none;" id="useroption">
-                                            <a class="dropdown-item" href="index.php?page=insert_staff">Profiles</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" id="logout" href="index.php?page=logout"
-                                                name="logout">Logout</a>
-                                        </div>
-                                    </div>
-                                </li>
+                                <a id="user" href="" style="display: none;"
+                                    class="nav-link p-3 text-primary"
+                                    aria-expanded="true"></a>
                             </ul>
                         </div>
                     </div>

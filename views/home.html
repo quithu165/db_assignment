@@ -1,28 +1,43 @@
 <head>
   <script src="views/js/category.js"></script>
 </head>
-<form class="container pr-2">
-  <div class="form-group">
-    <label for="exampleInputEmail1">Category</label>
-    <div class="row">
-      <div class="col-8">
-        <div class="row">
-          <input class="form-control" id="categoryip" placeholder="Enter Category">
+<div class="row">
+  <form class="container pr-2">
+    <div class="form-group">
+      <label for="exampleInputEmail1">Category</label>
+      <div class="row">
+        <div class="col-4" id="livesearch">
+          <div class="row">
+            <input class="form-control" id="categoryip" onkeyup="getProductList()" placeholder="Enter Category">
+          </div>
         </div>
-        <div class="row shadow-sm">
-          <a class="" id="categoryip" placeholder="Enter Category"> Test </a>
-        </div>
-        <div class="row shadow-sm">
-          <a class="" id="categoryip" placeholder="Enter Category"> Test </a>
-        </div>
-        <div class="row shadow-sm">
-          <a class="" id="categoryip" placeholder="Enter Category"> Test </a>
+        <div class="col-4">
+          <table class="table container">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Brand</th>
+                <th scope="col">Name</th>
+                <th scope="col">Model</th>
+                <th scope="col">Price</th>
+                <th scope="col">Availability</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td id="pd1">1</th>
+                <td id="pd2">Mark</td>
+                <td id="pd3">Otto</td>
+                <td id="pd4">@mdo</td>
+                <td id="pd5">Otto</td>
+                <td id="pd6">@mdo</td>
+              </tr>
+        
+            </tbody>
+          </table>
         </div>
       </div>
-      <div class="col-2">
-        <button type="button" class="btn btn-success bg-primary" onclick="getProductList()">Search</button>
-      </div>
-    </div>
 
-  </div>
-</form>
+    </div>
+  </form>
+</div>

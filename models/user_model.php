@@ -11,24 +11,28 @@ class User
 
 class UserModel extends DbModel
 {
-    public function login($username, $password)
+    public function login($username)
     {
-        if ($username == '' || $password == '') {
+        if ($username == '') {
             return false;
         }
         $conn = $this->connect();
-        $sql = 'SELECT 
+        $sql = "SELECT 
                         * 
                     FROM 
                         user
                     WHERE 
-                        username =  $username';
-        $res = mysqli_query($conn, $sql);
-        if (mysqli_num_rows($res) > 0) {
-            $row = mysqli_fetch_assoc($res);
-            return $row;
-        } else {
-            return null;
+                        username =  '$username'";
+        if (!$res = mysqli_query($conn, $sql)) {
+            echo "Can not query";
+            return false;
         }
+        if (mysqli_num_rows($res) > 0) {
+            if ($row = mysqli_fetch_assoc($res)) {
+                return $row['username'];
+            }
+        }
+
+        return "#fails";
     }
 }

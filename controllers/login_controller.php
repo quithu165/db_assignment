@@ -1,10 +1,9 @@
 <?php
 require_once('../models/user_model.php');
 $res = $_REQUEST['info'];
-$username = substr($res, 0, strripos($res, '_'));
-$password = substr($res, strripos($res, '_') + 1);
-echo ($username);
+// echo ($res);
 
 $usermodel = new UserModel();
-$data = $usermodel->login($username, $password);
+$data = $usermodel->login($res);
+if ($data != "#fails") $_SESSION['username'] = $data;
 echo($data);

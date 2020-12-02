@@ -1,14 +1,17 @@
 <?php
 session_start();
+if (!isset($_SESSION['username'])) {
+    $_SESSION['username'] = '';
+}
 include 'views/header.html';
 
 // define('STAFF', '2');
 // define('ADMIN', '3');
 
-// if (!isset($_SESSION['role'])) {
-//     $_SESSION['role'] = '';
-// }
-// $role = $_SESSION['role'];
+if (!isset($_SESSION['username'])) {
+    $_SESSION['username'] = '';
+}
+$username = $_SESSION['username'];
 
  
  if (isset($_GET['page'])) {
