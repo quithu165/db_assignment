@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3307:3307
--- Generation Time: Nov 30, 2020 at 07:21 AM
--- Server version: 10.4.14-MariaDB
--- PHP Version: 7.4.10
+-- Host: 127.0.0.1
+-- Generation Time: Dec 04, 2020 at 03:49 AM
+-- Server version: 10.4.16-MariaDB
+-- PHP Version: 7.4.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -25,13 +25,21 @@ DELIMITER $$
 --
 -- Procedures
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE `add_admin_to_product_management` (IN `admin` VARCHAR(30), IN `product_id` INT UNSIGNED)  MODIFIES SQL DATA
-IF EXISTS(SELECT `username` FROM `user` WHERE `username` = admin AND `user_type` = 'admin')
+CREATE DEFINER=`root`@`localhost` PROCEDURE `add_admin_to_product_management` (IN `admin_name` VARCHAR(30), IN `product_id` INT UNSIGNED)  MODIFIES SQL DATA
+IF EXISTS(SELECT `username` FROM `user` WHERE `username` = admin_name AND `user_type` = 1)
 THEN
-	INSERT INTO `admin_management` VALUES (admin, product_id);
+	INSERT INTO `admin_management` VALUES (admin_name, product_id);
     SELECT 'TRUE';
 ELSE     
 	SELECT 'FALSE';
+END IF$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `promote_to_admin` (IN `usernamee` VARCHAR(30))  MODIFIES SQL DATA
+IF (SELECT `user_type` FROM `online_shopping`.`user` WHERE `username` = usernamee) = 0 THEN
+UPDATE `online_shopping`.`user` SET `user_type` = 1 WHERE `username` = usernamee;
+GRANT `admin` to usernamee;
+SET DEFAULT ROLE `admin` FOR usernamee;
+ELSE (SELECT 'FALSE');
 END IF$$
 
 DELIMITER ;
@@ -87,14 +95,14 @@ CREATE TABLE `cart_content` (
 
 CREATE TABLE `category` (
   `category_id` int(10) UNSIGNED NOT NULL,
-  `name` varchar(30) COLLATE utf8_bin NOT NULL
+  `category_name` varchar(30) COLLATE utf8_bin NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `category`
 --
 
-INSERT INTO `category` (`category_id`, `name`) VALUES
+INSERT INTO `category` (`category_id`, `category_name`) VALUES
 (3, 'case'),
 (1, 'computer'),
 (6, 'cpu'),
@@ -111,8 +119,8 @@ INSERT INTO `category` (`category_id`, `name`) VALUES
 CREATE TABLE `product` (
   `product_id` int(10) UNSIGNED NOT NULL,
   `brand` varchar(20) COLLATE utf8_bin DEFAULT 'unknown',
-  `name` varchar(45) COLLATE utf8_bin NOT NULL,
-  `model` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `product_name` varchar(45) COLLATE utf8_bin NOT NULL,
+  `product_model` varchar(45) COLLATE utf8_bin DEFAULT NULL,
   `price` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `availability` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `category_id` int(10) UNSIGNED NOT NULL
@@ -122,7 +130,7 @@ CREATE TABLE `product` (
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`product_id`, `brand`, `name`, `model`, `price`, `availability`, `category_id`) VALUES
+INSERT INTO `product` (`product_id`, `brand`, `product_name`, `product_model`, `price`, `availability`, `category_id`) VALUES
 (1, 'DELL', 'XPS 13 (2019)', '9260', 10000000, 100, 1),
 (2, 'SAMSUNG', 'GALAXY NOTE 20', 'SM-6969', 20000000, 10, 5),
 (3, 'DELL', 'ULTRASHARP 24\"', 'U24Z17ABCD', 4499000, 50, 2),
@@ -146,45 +154,47 @@ INSERT INTO `product` (`product_id`, `brand`, `name`, `model`, `price`, `availab
 
 CREATE TABLE `user` (
   `username` varchar(30) COLLATE utf8_bin NOT NULL,
-  `password` varchar(45) COLLATE utf8_bin NOT NULL,
   `email` varchar(45) COLLATE utf8_bin NOT NULL,
   `address` varchar(50) COLLATE utf8_bin NOT NULL,
   `first_name` varchar(10) COLLATE utf8_bin NOT NULL,
   `last_name` varchar(10) COLLATE utf8_bin NOT NULL,
   `national_id` varchar(12) COLLATE utf8_bin NOT NULL,
-  `privilege` int(10) UNSIGNED NOT NULL DEFAULT 0,
-  `user_type` enum('customer','admin') COLLATE utf8_bin NOT NULL DEFAULT 'customer'
+  `user_type` int(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`username`, `password`, `email`, `address`, `first_name`, `last_name`, `national_id`, `privilege`, `user_type`) VALUES
-('charleswhite', 'charleswhite', 'charleswhite@youtube.com', 'Florida', 'Charles', 'White', '091838', 1, 'customer'),
-('hoanghatuandung', '*B158DC35B87F7B7369C709E89704DED73EBA40DC', 'dung.hoang190699@hcmut.edu.vn', 'Trash Can', 'Dũng', 'Hoàng', '69', 1, 'customer'),
-('lequangtrai', 'lequangtrai', '1656969@hcmut.edu.vn', 'School', 'Trải', 'Lê', '045314', 100, 'admin'),
-('ngonguyenduyan', 'ngonguyenduyan', 'anngo@hcmut.edu.vn', 'Small house', 'An', 'Ngô', '45', 1, 'customer'),
-('ngoquithu', '*B5BD631632EE0CC970CF97DC9F4132D54F632D87', 'thu.ngo@onlineshopping.com', 'Database Server', 'Thụ', 'Ngô', '164', 100, 'admin'),
-('thangphuvinh', '*B71BB483C492103E068DEE81B88373E6B747E630', 'vinhthang@hcmut.edu.vn', 'Hospital', 'Vinh', 'Thang', '100', 1, 'customer'),
-('trinhmaiduy', '*8FBB4C53C5131236982A1D58115C081590916A53', 'duytrinh@hcmut.edu.vn', 'Big house', 'Duy', 'Trịnh', '44', 1, 'customer'),
-('vohoangtri', '*E0F96D0594C6D88F61AB06A4134802BAF3C875F9', 'tri.vo.emailtaobiara@hcmut.edu.vn', 'Dumpster', 'Trí', 'Võ', '70', 1, 'customer'),
-('vuthanhdat', '*DD3242B8E4D5106A56D64F584DCAC7C39178975D', 'datvuhaha@lmfao.nk', 'House', 'Đạt', 'Vũ', '343', 100, 'admin');
+INSERT INTO `user` (`username`, `email`, `address`, `first_name`, `last_name`, `national_id`, `user_type`) VALUES
+('charleswhite', 'charleswhite@youtube.com', 'Florida', 'Charles', 'White', '091838', 0),
+('hoanghatuandung', 'dung.hoang190699@hcmut.edu.vn', 'Trash Can', 'Dũng', 'Hoàng', '69', 1),
+('lequangtrai', '1656969@hcmut.edu.vn', 'School', 'Trải', 'Lê', '045314', 1),
+('ngonguyenduyan', 'anngo@hcmut.edu.vn', 'Small house', 'An', 'Ngô', '45', 1),
+('ngoquithu', 'thu.ngo@onlineshopping.com', 'Database Server', 'Thụ', 'Ngô', '164', 1),
+('thangphuvinh', 'vinhthang@hcmut.edu.vn', 'Hospital', 'Vinh', 'Thang', '100', 0),
+('trinhmaiduy', 'duytrinh@hcmut.edu.vn', 'Big house', 'Duy', 'Trịnh', '44', 1),
+('vohoangtri', 'tri.vo.emailtaobiara@hcmut.edu.vn', 'Dumpster', 'Trí', 'Võ', '70', 1),
+('vuthanhdat', 'haha@haha.com', 'new address', 'Đạt', 'Vũ', '343', 1);
+
+-- --------------------------------------------------------
 
 --
--- Triggers `user`
+-- Table structure for table `user_type`
 --
-DELIMITER $$
-CREATE TRIGGER `check_admin_for_privilege` BEFORE INSERT ON `user` FOR EACH ROW IF NEW.user_type = 'admin'
-THEN
-	SET NEW.privilege = 100;
-END IF
-$$
-DELIMITER ;
-DELIMITER $$
-CREATE TRIGGER `password_hashing` BEFORE INSERT ON `user` FOR EACH ROW SET NEW.password = PASSWORD(NEW.password)
-$$
-DELIMITER ;
+
+CREATE TABLE `user_type` (
+  `user_type_name` varchar(10) DEFAULT NULL,
+  `user_type_enum_value` int(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='DO NOT CHANGE THIS';
+
+--
+-- Dumping data for table `user_type`
+--
+
+INSERT INTO `user_type` (`user_type_name`, `user_type_enum_value`) VALUES
+('admin', 1),
+('customer', 0);
 
 --
 -- Indexes for dumped tables
@@ -217,14 +227,14 @@ ALTER TABLE `cart_content`
 --
 ALTER TABLE `category`
   ADD PRIMARY KEY (`category_id`),
-  ADD UNIQUE KEY `name_UNIQUE` (`name`);
+  ADD UNIQUE KEY `name_UNIQUE` (`category_name`);
 
 --
 -- Indexes for table `product`
 --
 ALTER TABLE `product`
   ADD PRIMARY KEY (`product_id`),
-  ADD UNIQUE KEY `model_UNIQUE` (`model`),
+  ADD UNIQUE KEY `model_UNIQUE` (`product_model`),
   ADD KEY `fk_product_category_id` (`category_id`);
 
 --
@@ -233,7 +243,15 @@ ALTER TABLE `product`
 ALTER TABLE `user`
   ADD PRIMARY KEY (`username`),
   ADD UNIQUE KEY `email_UNIQUE` (`email`),
-  ADD UNIQUE KEY `national_id_UNIQUE` (`national_id`);
+  ADD UNIQUE KEY `national_id_UNIQUE` (`national_id`),
+  ADD KEY `fk_user_type_enum_value` (`user_type`);
+
+--
+-- Indexes for table `user_type`
+--
+ALTER TABLE `user_type`
+  ADD PRIMARY KEY (`user_type_enum_value`),
+  ADD UNIQUE KEY `user_type_name` (`user_type_name`);
 
 --
 -- Constraints for dumped tables
@@ -264,6 +282,12 @@ ALTER TABLE `cart_content`
 --
 ALTER TABLE `product`
   ADD CONSTRAINT `fk_product_category_id` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`);
+
+--
+-- Constraints for table `user`
+--
+ALTER TABLE `user`
+  ADD CONSTRAINT `fk_user_type_enum_value` FOREIGN KEY (`user_type`) REFERENCES `user_type` (`user_type_enum_value`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

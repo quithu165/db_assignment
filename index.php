@@ -13,7 +13,9 @@ if (!isset($_SESSION['username'])) {
 }
 $username = $_SESSION['username'];
 
- 
+if(!isset($_COOKIE["username"])) {
+    
+  }
  if (isset($_GET['page'])) {
     $page = $_GET['page'];
     if ($page == "") {
@@ -23,7 +25,10 @@ $username = $_SESSION['username'];
         include "views/home.html";
     } 
     elseif ($page == "login") {
-        include "views/login_view.html";
+        include "views/login.html";
+    } 
+    elseif ($page == "signup") {
+        include "views/signup.html";
     } 
  }
  else include "views/home.html";
