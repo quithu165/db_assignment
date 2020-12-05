@@ -27,8 +27,8 @@ class Category extends DbModel
             }
             if (mysqli_num_rows($res) > 0) {
                 while ($row = mysqli_fetch_assoc($res)) {
-                    if (strpos($row['name'], $category) && strlen($category) <= strlen($row['name']))
-                        $productList = $productList . '_' . $row["name"] . '_' . $row["product_id"];
+                    if (strpos($row['product_name'], $category) && strlen($category) <= strlen($row['product_name']))
+                        $productList = $productList . '_' . $row["product_name"] . '_' . $row["product_id"];
                     // echo ($productList);            
                 }
             }
@@ -53,7 +53,7 @@ class Category extends DbModel
             $productInfo = "";
             if (mysqli_num_rows($res) > 0) {
                 if ($row = mysqli_fetch_assoc($res)) {    
-                    $productInfo = $row["product_id"].'_'.$row["brand"].'_'.$row["name"].'_'.$row["model"].'_'.$row["price"].'_'.$row["availability"];      
+                    $productInfo = $row["product_id"].'_'.$row["brand"].'_'.$row["product_name"].'_'.$row["product_model"].'_'.$row["price"].'_'.$row["availability"];      
                 }
             }
           

@@ -20,6 +20,6 @@
 
     $result = mysqli_multi_query($mysqli, $sql);  
     mysqli_close($mysqli);
-    require_once("../views/index.php?page=login");
+    require_once("../views/login.html");
 
 ?>
