@@ -13,10 +13,13 @@
     $database = "online_shopping";
     $mysqli = new mysqli($server, $username, $password);
     //SQL EDIT HERE
-    // $sql = "CREATE USER ".$new_username." IDENTIFIED VIA mysql_native_password USING PASSWORD('".$new_password."');";
-    // $sql .= "GRANT `customer` TO '$new_username';";
-    // $sql .= "SET DEFAULT ROLE `customer` FOR '$new_username';";
-    // $sql .= "INSERT INTO `online_shopping`.`user` VALUES ('$new_username', '$email', '$address', '$first_name', '$last_name', '$national_id', 'customer');";
+    $sql = "UPDATE `online_shopping`.`product` 
+            SET `brand` = '".$brand."', `product_name` = '".$name."', 
+                `product_model` = '".$model."', `mrsp` = '".$price."', `availability` = '".$avai."'
+            WHERE `product_id` = '".$id."';";
+
+
+
 
     $result = mysqli_multi_query($mysqli, $sql);  
     mysqli_close($mysqli);
