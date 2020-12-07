@@ -6,10 +6,10 @@
 	if ($func == "getProductList") {
 		$categorymodel = new Category();
 		$data = $categorymodel->queryProductList($category);
-		echo ("_1_2");
+		echo ($data);
 	}
 	else {
 		$categorymodel = new Category();
 		$data = $categorymodel->queryProduct($res);
-		echo ("1_2_3_4_5_6");
+		echo ($data);
 	}

@@ -1,0 +1,46 @@
+<head>
+  <script src="views/js/category.js"></script>
+</head>
+<div class="row">
+  <form class="container pr-2">
+    <div class="form-group">
+      <label for="exampleInputEmail1">Category</label>
+      <div class="row">
+        <div class="col-4" id="livesearch">
+          <div class="row">
+            <input class="form-control" id="category" onkeyup="getProductOfCategory()" placeholder="Enter Category">
+          </div>
+        </div>
+        <div class="container" style="margin-top:30px">
+        </div>
+        <table class="table container">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Brand</th>
+              <th scope="col">Name</th>
+              <th scope="col">Model</th>
+              <th scope="col">Price</th>
+              <th scope="col">Availability</th>
+            </tr>
+          </thead>
+          <tbody name="tableProduct">
+            <!-- <tr>
+              <td id="pd1"></th>
+              <td id="pd2"></td>
+              <td id="pd3"></td>
+              <td id="pd4"></td>
+              <td id="pd5"></td>
+              <td id="pd6"></td>
+            </tr> -->
+      
+          </tbody>
+        </table>
+        <!-- <div class="col-4">
+
+        </div>
+      </div> -->
+
+    </div>
+  </form>
+</div>

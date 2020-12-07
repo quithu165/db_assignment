@@ -17,20 +17,22 @@ if (isset($_COOKIE["username"])) {
 ?>
     <script>
         var loginBlock = document.getElementById("login");
-        loginBlock.style.display = 'none';
         var signupBlock = document.getElementById("signup");
-        signupBlock.style.display = 'none';
         var logoutBlock = document.getElementById("logout");
+
+        loginBlock.style.display = 'none';
+        signupBlock.style.display = 'none';
         logoutBlock.removeAttribute("style");
     </script>
 <?php
 } else { ?>
     <script>
         var signupBlock = document.getElementById("signup");
+        var loginBlock = document.getElementById("login");
+        var logoutBlock = document.getElementById("logout");
+
         logoutBlock.style.display = 'none';
-        var logoutBlock = document.getElementById("logout");
         loginBlock.removeAttribute("style");
-        var logoutBlock = document.getElementById("logout");
         signupBlock.removeAttribute("style");
     </script>
     <?php
@@ -78,6 +80,9 @@ if (isset($_GET['page'])) {
         include "views/delete.html";
     } elseif ($page == "promote") {
         include "views/promote.html";
+    }
+    elseif ($page == "category") {
+        include "views/category.html";
     }
 } else include "views/home.html";
 //require_once 'views/footer.html';

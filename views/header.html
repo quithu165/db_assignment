@@ -42,11 +42,15 @@
                         </button>
                         <div class="collapse navbar-collapse" id="navbarResponsive">
                             <ul class="navbar-nav" id="nav_menu">
-                                <li class="nav-item active">
-                                    <a class="nav-link" href="index.php?page=home">View DB
-                                        <span class="sr-only">(current)</span>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                      DB Search
                                     </a>
-                                </li>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                      <a class="dropdown-item"  href="index.php?page=home">Search Product</a>
+                                      <a class="dropdown-item" href="index.php?page=category">Category</a>
+                                    </div>
+                                  </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="index.php?page=insert" id="insert" style="display:none">Insert Product</a>
                                 </li>

@@ -11,7 +11,7 @@ else {
     if ($result = mysqli_query($mysqli, $sql)) {
         $row = mysqli_fetch_assoc($result);
         echo $sql;
-        echo $row;
+        echo var_dump($row);
         setcookie("role", $row["user_type"], time() + 100000, "/");
         setcookie("username", $username, time() + 100000, "/");
     }
