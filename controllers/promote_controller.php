@@ -8,12 +8,9 @@
     $database = "online_shopping";
     $mysqli = new mysqli($server, $username, $password);
     //SQL DELETE HERE
-    $sql = "DROP USER ".$name.";";
+    $sql = "CALL promote_to_admin('$name');";
 
-
-    $sql .= "DELETE FROM `online_shopping`.`user` WHERE `username` = '".$name."';";
-
-    $result = mysqli_multi_query($mysqli, $sql);  
+    $result = mysqli_query($mysqli, $sql);  
     mysqli_close($mysqli);
     header( "Location: ../index.php?page=home" );
 
