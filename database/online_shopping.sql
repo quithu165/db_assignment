@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 06, 2020 at 02:39 AM
+-- Generation Time: Dec 07, 2020 at 08:26 AM
 -- Server version: 10.4.16-MariaDB
 -- PHP Version: 7.4.12
 
@@ -35,10 +35,17 @@ ELSE
 END IF$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `promote_to_admin` (IN `usernamee` VARCHAR(30))  MODIFIES SQL DATA
-IF (SELECT `user_type` FROM `online_shopping`.`user` WHERE `username` = usernamee) = 0 THEN
+IF (SELECT `user_type` FROM `online_shopping`.`user` WHERE `username` = usernamee) = 0 AND (SELECT EXISTS(SELECT * FROM `mysql`.`user` WHERE `user` = usernamee)) = 1 THEN
+SET @sql = CONCAT('GRANT admin to ', usernamee, ';');
+/*SET DEFAULT ROLE admin FOR usernamee;*/
+PREPARE `promote` FROM @sql;
+EXECUTE `promote`;
+DEALLOCATE PREPARE `promote`;
+SET @sql_set = CONCAT('SET DEFAULT ROLE admin FOR ', usernamee, ';');
+PREPARE `promote` FROM @sql_set;
+EXECUTE `promote`;
+DEALLOCATE PREPARE `promote`;
 UPDATE `online_shopping`.`user` SET `user_type` = 1 WHERE `username` = usernamee;
-GRANT `admin` to usernamee;
-SET DEFAULT ROLE `admin` FOR usernamee;
 ELSE (SELECT 'FALSE');
 END IF$$
 
@@ -60,7 +67,9 @@ CREATE TABLE `admin_management` (
 --
 
 INSERT INTO `admin_management` (`username`, `product_id`) VALUES
-('ngoquithu', 1);
+('ngoquithu', 1),
+('ngoquithu', 2),
+('ngoquithu', 10);
 
 -- --------------------------------------------------------
 
@@ -81,7 +90,8 @@ CREATE TABLE `cart` (
 
 INSERT INTO `cart` (`transaction_id`, `price`, `username`, `payment_method`) VALUES
 ('2020-12-05 14:49:17', 5095000, 'lequangtrai', 'cash'),
-('2020-12-05 15:29:33', 107900000, 'lequangtrai', 'cash');
+('2020-12-05 15:29:33', 107900000, 'lequangtrai', 'cash'),
+('2020-12-07 12:22:00', 42495000, 'trinhmaiduy', 'cash');
 
 -- --------------------------------------------------------
 
@@ -103,7 +113,9 @@ INSERT INTO `cart_content` (`transaction_id`, `product_id`, `quantity`) VALUES
 ('2020-12-05 14:49:17', 4, 2),
 ('2020-12-05 14:49:17', 5, 3),
 ('2020-12-05 15:29:33', 1, 10),
-('2020-12-05 15:29:33', 15, 1);
+('2020-12-05 15:29:33', 15, 1),
+('2020-12-07 12:22:00', 1, 2),
+('2020-12-07 12:22:00', 3, 5);
 
 --
 -- Triggers `cart_content`
@@ -434,9 +446,9 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`product_id`, `brand`, `product_name`, `product_model`, `msrp`, `availability`, `category_id`) VALUES
-(1, 'DELL', 'XPS 13 (2019)', '9260', 10000000, 60, 1),
+(1, 'DELL', 'XPS 13 (2019)', '9260', 10000000, 58, 1),
 (2, 'SAMSUNG', 'GALAXY NOTE 20', 'SM-6969', 20000000, 988, 5),
-(3, 'DELL', 'ULTRASHARP 24\"', 'U24Z17ABCD', 4499000, 15, 2),
+(3, 'DELL', 'ULTRASHARP 24\"', 'U24Z17ABCD', 4499000, 10, 2),
 (4, 'NZXT', 'H500 Mid Tower Case', 'H500', 1499000, 86, 3),
 (5, 'ASUS', 'Z490 ROG STRIX DITMEMAY WIFI', 'Z490ROGDMMAC', 699000, 100, 4),
 (7, 'AMD', 'RYZEN 5 6969X 5.0GHZ', 'R5-6969XOC', 7500000, 55, 6),
@@ -476,6 +488,7 @@ INSERT INTO `user` (`username`, `email`, `address`, `first_name`, `last_name`, `
 ('ngonguyenduyan', 'anngo@hcmut.edu.vn', 'Small house', 'An', 'Ngô', '45', 0),
 ('ngoquithu', 'thu.ngo@onlineshopping.com', 'Database Server', 'Thụ', 'Ngô', '164', 1),
 ('thangphuvinh', 'vinhthang@hcmut.edu.vn', 'Hospital', 'Vinh', 'Thang', '100', 0),
+('thong', '1', '1', '1', '1', '1', 1),
 ('trinhmaiduy', 'duytrinh@hcmut.edu.vn', 'Big house', 'Duy', 'Trịnh', '44', 1),
 ('vohoangtri', 'tri.vo.emailtaobiara@hcmut.edu.vn', 'Dumpster', 'Trí', 'Võ', '70', 0),
 ('vuthanhdat', 'haha@haha.com', 'new address', 'Đạt', 'Vũ', '343', 1);

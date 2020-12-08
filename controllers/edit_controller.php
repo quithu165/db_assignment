@@ -13,16 +13,26 @@
     $database = "online_shopping";
     $mysqli = new mysqli($server, $username, $password);
     //SQL EDIT HERE
-    $sql = "UPDATE `online_shopping`.`product` 
-            SET `brand` = '".$brand."', `product_name` = '".$name."', 
-                `product_model` = '".$model."', `mrsp` = '".$price."', `availability` = '".$avai."'
-            WHERE `product_id` = '".$id."';";
+    // $sql = "UPDATE `online_shopping`.`product` 
+    //         SET `brand` = '".$brand."', `product_name` = '".$name."', 
+    //             `product_model` = '".$model."', `msrp` = $price, `availability` = $avai
+    //         WHERE `product_id` = $id;";
 
-
-
-
-    $result = mysqli_multi_query($mysqli, $sql);  
+$stmt = $mysqli->prepare("UPDATE `online_shopping`.`product` 
+SET `brand` = ?, `product_name` = ?, 
+    `product_model` = ?, `msrp` = ?, `availability` = ?
+WHERE `product_id` = ?;");
+$stmt->bind_param("sssiii", $pbrand, $pname, $pmodel, $pprice, $pavai, $pid);
+$pid = $id;
+$pbrand = $brand;
+$pname = $name;
+$pmodel = $model;
+$pprice = $price;
+$pavai = $avai;
+$stmt->execute();
+//  echo $stmt;
+//     $result = mysqli_multi_query($mysqli, $sql);  
     mysqli_close($mysqli);
-    header( "Location: ../index.php?page=home" );
+    // header( "Location: ../index.php?page=home" );
 
 ?>

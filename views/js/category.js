@@ -62,7 +62,7 @@ function getProductOfCategory() {
             var data = this.responseText;
             if (data.length > 0) {
                 data = data.substr(4, data.length - 1);
-                // console.log(data);
+                console.log(data);
 
                 //addResult(data[0, data.indexOf("_")]);
                 index = 1;
@@ -116,9 +116,9 @@ function addProductResult(index, id) {
     ajax.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             var data = this.responseText;
-            console.log(data);
+            // console.log(data);
             var table = document.getElementsByName("tableProduct")[0];
-            console.log(table);
+            // console.log(table);
             var newRow = document.createElement("tr");
             table.appendChild(newRow);
             newRow.id = "row" + index;
