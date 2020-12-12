@@ -84,6 +84,9 @@ if (isset($_GET['page'])) {
     elseif ($page == "category") {
         include "views/category.html";
     }
+    elseif ($page == "report") {
+        include "views/report.html";
+    }
 } else include "views/home.html";
 //require_once 'views/footer.html';
 ?>

@@ -20,6 +20,6 @@
 
     $result = mysqli_multi_query($mysqli, $sql);  
     mysqli_close($mysqli);
-    // header( "Location: ../index.php?page=home" );
+    header( "Location: ../index.php?page=home" );
 
 ?>
